@@ -45,8 +45,8 @@ const follow = async (token, id) => {
 };
 
 const main = async () => {
-  const token = ""; // Вставьте свой токен
-  const userId = ""; // Вставьте свой идентификатор пользователя
+  const token = ""; // your auth token
+  const userId = ""; // userID person with friend list
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
   console.log(`Grabbing following...`);
 
