@@ -26,7 +26,7 @@ const follow = async (token, id) => {
       `https://657a5yyhsb.execute-api.ap-southeast-1.amazonaws.com/production/profile/${id}/followers`,
       {
         headers: {
-          accept: "application.json, text/plain, */*",
+          accept: "application/json, text/plain, */*",
           "accept-language": "en-US,en;q=0.9",
           authorization: "Bearer " + token,
           "content-type": "application/json; charset=UTF-8",
@@ -46,7 +46,7 @@ const follow = async (token, id) => {
 
 const main = async () => {
   const token = ""; // your auth token
-  const userId = ""; // userID person with friend list
+  const userId = ""; // userId with friend list
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
   console.log(`Grabbing following...`);
 
@@ -65,24 +65,26 @@ const main = async () => {
       break;
     }
 
-    for (const user of getFollowing.users) {
-      if (user.followStatus != "NONE") return;
-      const doFollow = await follow(token, user.id);
-      if (doFollow.followStatus) {
-        console.log(
-          `[${i++}] [${user.id}] ${user.displayName} (@${
-            user.username
-          }) | Status : ${doFollow.followStatus}`
-        );
-      } else {
-        console.log(
-          `[${i++}] [${user.id}] ${user.displayName} (@${
-            user.username
-          }) | Status : ${JSON.stringify(doFollow)}`
-        );
-      }
-      await delay(5000); // Delay in milliseconds 
-    }
+    await Promise.all(
+      getFollowing.users.map(async (user) => {
+        if (user.followStatus != "NONE") return;
+        const doFollow = await follow(token, user.id);
+        if (doFollow.followStatus) {
+          console.log(
+            `[${i++}] [${user.id}] ${user.displayName} (@${
+              user.username
+            }) | Status : ${doFollow.followStatus}`
+          );
+        } else {
+          console.log(
+            `[${i++}] [${user.id}] ${user.displayName} (@${
+              user.username
+            }) | Status : ${JSON.stringify(doFollow)}`
+          );
+        }
+      })
+    );
+    await delay(1500);
   } while (lastKey !== "");
 };
 
