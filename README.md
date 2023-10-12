@@ -2,6 +2,8 @@
 
 Sign in republik.gg account
 
+We will use sript.js file content only
+
 In line 48 - your auth token (ctrl+f12--> network tab, Fetch/XHR--> "tokens" file, headers tab--> Authorization field--> all expect Bearer word). An example of what an auth token looks like can be seen in authTokenExample.txt
 
 In line 49 - user Id person with friend list (https://app.republik.gg/profile/userID)
